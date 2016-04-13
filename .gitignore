@@ -1,0 +1,4 @@
+# List of items for git to ignore
+
+*.pyc
+*secrets.*
