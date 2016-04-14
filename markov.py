@@ -104,12 +104,12 @@ def make_text(chains, n_gram_length):
 
     # # While loop deletes the last word from words_list until it 
     # # finds a final word that ends in a punctuation mark.
-    # while True:
-    #     test_word = words_list[-1]
-    #     if test_word[-1].isalnum():
-    #         del words_list[-1]
-    #     else:
-    #         break
+    while True:
+        test_word = words_list[-1]
+        if test_word[-1].isalnum():
+            del words_list[-1]
+        else:
+            break
 
     # Joins words_list as string called text
     text = " ".join(words_list)
@@ -127,10 +127,10 @@ def tweet(status_update):
         access_token_key=os.environ["TWITTER_ACCESS_TOKEN_KEY"],
         access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"])
 
-    print api.VerifyCredentials()
+    # print api.VerifyCredentials()
 
-    status = api.PostUpdate(status_update)
-    print status.text
+    api.PostUpdate(status_update)
+    # print status.text
 
     pass
 
@@ -141,14 +141,24 @@ def loop_text(chains, n_gram_length):
         print possible_tweet
         print "*Press 'y' to post this tweet."
         print "*Press 'n' to try another tweet."
-        print "*Press 'q' to quit."
+        print "*Press 'q' to quit without posting."
 
         decision = raw_input("What would you like to do? ").lower()
 
         if decision == 'q':
-
-
-
+            break
+        elif decision == 'y':
+            tweet(possible_tweet)
+            print "Great, your tweet has been posted."
+            print
+            print
+            print "Here's another possible tweet:"
+            continue
+        elif decision == 'n':
+            print
+            print
+            print "Here's another possible tweet:"
+            continue
 
 
 input_path = sys.argv[1]
@@ -164,7 +174,5 @@ input_text = input_text + " " + input_text2
 chains = make_chains(input_text, n_gram_length)
 
 # Produce random text
-random_text = make_text(chains, n_gram_length)
-
-tweet(random_text)
+loop_text(chains, n_gram_length)
 
